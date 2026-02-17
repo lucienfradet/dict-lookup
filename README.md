@@ -7,5 +7,6 @@ word definition to the notification daemon
 - `jq`
 - `htmlq`
 - `X11` with `xclip` & `setxkbmap`
-**Optional**
+
+**Optional:**
 - A Nerd Font set as you notification daemon default
