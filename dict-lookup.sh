@@ -52,13 +52,13 @@ if [ "$LANG" = "fr" ]; then
     exit 1
   fi
 
-  # fetch usito
-  fetch-usito $word
+  # fetch usito API to get first available url param (stripped of '.ad')
+  params=$(curl -G "https://usito.usherbrooke.ca/v2/documents?" \
+    --data-urlencode "contient=$word" \
+    | jq -r '.["données"].items[0].["clé"].id')
 
-  # refetch with sufix _1
-  if [ -z "$DEFINITIONS" ]; then
-    fetch-usito $word "_1"
-  fi
+  fetch-usito "${params//.ad/}"
+
 
   if [ -z "$DEFINITIONS" ]; then
       notify-send "Usito: $word" "Aucune définition trouvée" -i None
