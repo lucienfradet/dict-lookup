@@ -29,7 +29,7 @@ fi
 
 fetch-usito() {
   # Usito
-  URL="https://usito.usherbrooke.ca/d%C3%A9finitions/${1}${2}"
+  URL="https://usito.usherbrooke.ca/d%C3%A9finitions/${1}"
   local html=$(curl -s "$URL")
 
   # DEFINITIONS=$(echo "$html" | htmlq '.def_sous_entree-style' --text 2>/dev/null | head -3 | nl -w1 -s'. ' | sed 'G')
@@ -43,6 +43,17 @@ fetch-usito() {
         DEFINITIONS+="$count. $def"$'\n\n'
     fi
   done
+
+  count=0
+  if [ -z "$DEFINITIONS" ]; then
+    for i in 1 2 3; do
+      def=$(echo "$html" | htmlq ".sens-styleC:nth-of-type($i) .def_sous_entree-style" --text 2>/dev/null | tr '\n' ' ' | sed 's/[[:space:]]\+/ /g' | grep -o '^[^.]*\.')
+      if [ -n "$def" ]; then
+        count=$((count + 1))
+        DEFINITIONS+="$count. $def"$'\n\n'
+      fi
+    done
+  fi
 }
 
 # Query based on language
