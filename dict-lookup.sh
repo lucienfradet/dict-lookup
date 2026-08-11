@@ -111,7 +111,7 @@ else
 
   # Check if we got a definition
   if [ -z "$definitions" ]; then
-    notify-send "Dictionary: $word" "Could not parse definition" -i dialog-error
+    notify-send "Dictionary: $word" "Could not parse definition" -i None
     exit 1
   fi
 
